@@ -23,4 +23,12 @@ export default tseslint.config([
       globals: globals.browser,
     },
   },
+  {
+    // ShadCN primitives export a `*Variants` cva const alongside the component;
+    // the fast-refresh export rule doesn't apply to these generated leaf files.
+    files: ['src/components/ui/**'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

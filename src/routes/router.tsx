@@ -1,10 +1,27 @@
-import { createBrowserRouter } from 'react-router-dom'
-import { MiniErpPage } from '@/pages/MiniErpPage'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { AppLayout } from '@/components/layout/AppLayout'
+import { ProtectedRoute } from '@/components/layout/ProtectedRoute'
+import { LoginPage } from '@/pages/LoginPage'
+import { DashboardPage } from '@/pages/DashboardPage'
 
-/** Router shell — one placeholder route for now. */
+/**
+ * Route map: a public /login, and a protected group (auth guard → app shell)
+ * that hosts the dashboard. Unknown paths fall through to /dashboard, which the
+ * guard resolves (→ /login when signed out).
+ */
 export const router = createBrowserRouter([
+  { path: '/login', element: <LoginPage /> },
   {
-    path: '/',
-    element: <MiniErpPage />,
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [
+          { index: true, element: <Navigate to="/dashboard" replace /> },
+          { path: 'dashboard', element: <DashboardPage /> },
+        ],
+      },
+    ],
   },
+  { path: '*', element: <Navigate to="/dashboard" replace /> },
 ])
