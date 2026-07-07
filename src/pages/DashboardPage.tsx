@@ -43,7 +43,12 @@ export function DashboardPage() {
       <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatCard label="Products" value={data.totalProducts} icon={Package} />
+        <StatCard
+          label="Products"
+          value={data.totalProducts}
+          icon={Package}
+          to="/products"
+        />
         <StatCard label="Customers" value={data.totalCustomers} icon={Users} />
         <StatCard label="Sales" value={data.totalSales} icon={ShoppingCart} />
       </div>

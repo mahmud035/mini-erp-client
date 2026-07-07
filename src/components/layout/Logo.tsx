@@ -1,4 +1,4 @@
-import { Boxes } from 'lucide-react'
+import { Box } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
 /**
@@ -32,7 +32,7 @@ export function Logo({
           stacked ? 'size-11' : 'size-7',
         )}
       >
-        <Boxes className={stacked ? 'size-6' : 'size-4'} />
+        <Box className={stacked ? 'size-6' : 'size-4'} />
       </span>
       <span
         className={cn(

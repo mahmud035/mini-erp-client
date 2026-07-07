@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import { LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -24,9 +24,12 @@ export function AppLayout() {
   return (
     <div className="min-h-svh bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b border-border bg-card shadow-xs">
-        <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
-          <div className="flex items-center gap-6">
+        <nav className="mx-auto grid h-16 max-w-6xl grid-cols-3 items-center px-4">
+          <Link to="/dashboard" className="justify-self-start">
             <Logo />
+          </Link>
+
+          <div className="flex items-center gap-6 justify-self-center">
             <NavLink to="/dashboard" className={navLinkClass}>
               Dashboard
             </NavLink>
@@ -40,16 +43,11 @@ export function AppLayout() {
             )}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 justify-self-end">
             {user && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
-                  {user.name}
-                </span>
-                <Badge variant="neutral" className="capitalize">
-                  {user.role.name}
-                </Badge>
-              </div>
+              <Badge variant="neutral" className="capitalize">
+                {user.role.name}
+              </Badge>
             )}
             <Button
               variant="ghost"
