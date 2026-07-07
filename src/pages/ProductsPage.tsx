@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { Plus, Search } from 'lucide-react'
 import type { Product } from '@/api/types'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -8,15 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAuth } from '@/features/auth/auth.hooks'
-import { ProductTable } from '@/features/product/components/ProductTable'
-import { ProductFormDialog } from '@/features/product/components/ProductFormDialog'
 import { DeleteProductDialog } from '@/features/product/components/DeleteProductDialog'
+import { ProductFormDialog } from '@/features/product/components/ProductFormDialog'
+import { ProductTable } from '@/features/product/components/ProductTable'
 import { useProducts } from '@/features/product/product.hooks'
 import { useDebounce } from '@/hooks/useDebounce'
+import { Plus, Search } from 'lucide-react'
+import { useState } from 'react'
 
 const LIMIT = 10
 
@@ -73,10 +73,11 @@ export function ProductsPage() {
       <div className="relative max-w-sm">
         <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
+          type="search"
           placeholder="Search by name, SKU, or category…"
+          className="pl-9"
           value={searchInput}
           onChange={(event) => onSearchChange(event.target.value)}
-          className="pl-9"
         />
       </div>
 
