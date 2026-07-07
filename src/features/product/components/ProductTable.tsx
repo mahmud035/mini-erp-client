@@ -10,13 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-const LOW_STOCK_THRESHOLD = 5
-
-/** Two-decimal money format (no currency symbol — matches backend numerics). */
-function formatMoney(value: number): string {
-  return value.toFixed(2)
-}
+import { formatCurrency } from '@/utils/formatCurrency'
+import { stockBadgeVariant } from '@/utils/stockBadge'
 
 interface ProductTableProps {
   products: Product[]
@@ -67,18 +62,14 @@ export function ProductTable({
             </TableCell>
             <TableCell>{product.category}</TableCell>
             <TableCell className="text-right tabular-nums">
-              {formatMoney(product.purchasePrice)}
+              {formatCurrency(product.purchasePrice)}
             </TableCell>
             <TableCell className="text-right tabular-nums">
-              {formatMoney(product.sellingPrice)}
+              {formatCurrency(product.sellingPrice)}
             </TableCell>
             <TableCell className="text-right">
               <Badge
-                variant={
-                  product.stockQuantity < LOW_STOCK_THRESHOLD
-                    ? 'destructive'
-                    : 'secondary'
-                }
+                variant={stockBadgeVariant(product.stockQuantity)}
                 className="tabular-nums"
               >
                 {product.stockQuantity}

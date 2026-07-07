@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useFieldArray, useForm, useWatch } from 'react-hook-form'
-import { Plus } from 'lucide-react'
+import { ChevronDown, Plus } from 'lucide-react'
 import axios from 'axios'
 import type { Customer, CreateSalePayload, Product } from '@/api/types'
 import { Button } from '@/components/ui/button'
@@ -11,11 +11,9 @@ import {
   type SaleFormValues,
 } from '@/features/sale/sale.validation'
 import { zodResolver } from '@/utils/zodResolver'
+import { formatCurrency } from '@/utils/formatCurrency'
+import { selectClassName } from '@/utils/selectClassName'
 import { SaleItemRow } from '@/features/sale/components/SaleItemRow'
-
-/** Native-select styling, matched to the shared `Input` component. */
-const selectClass =
-  'h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30'
 
 const EMPTY_SALE: SaleFormValues = {
   customer: '',
@@ -116,19 +114,22 @@ export function SaleForm({ customers, products }: SaleFormProps) {
     >
       <div className="grid gap-2">
         <Label htmlFor="customer">Customer</Label>
-        <select
-          id="customer"
-          className={selectClass}
-          aria-invalid={!!errors.customer}
-          {...register('customer')}
-        >
-          <option value="">Select a customer…</option>
-          {customers.map((customer) => (
-            <option key={customer._id} value={customer._id}>
-              {customer.name} — {customer.phone}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            id="customer"
+            className={selectClassName}
+            aria-invalid={!!errors.customer}
+            {...register('customer')}
+          >
+            <option value="">Select a customer…</option>
+            {customers.map((customer) => (
+              <option key={customer._id} value={customer._id}>
+                {customer.name} — {customer.phone}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+        </div>
         {errors.customer && (
           <p className="text-sm text-destructive">{errors.customer.message}</p>
         )}
@@ -170,28 +171,28 @@ export function SaleForm({ customers, products }: SaleFormProps) {
         )}
       </div>
 
-      <div className="flex items-center justify-between border-t pt-4">
+      <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 px-4 py-3">
         <span className="text-sm text-muted-foreground">
           Total (preview — server confirms on submit)
         </span>
-        <span className="text-lg font-semibold tabular-nums">
-          ৳{grandTotal.toFixed(2)}
+        <span className="text-2xl font-semibold text-foreground tabular-nums">
+          {formatCurrency(grandTotal)}
         </span>
       </div>
 
       {successTotal !== null && (
         <p
           role="status"
-          className="rounded-md bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-400"
+          className="rounded-md border border-success/20 bg-success/10 px-3 py-2 text-sm text-success"
         >
-          Sale recorded. Server grand total: ৳{successTotal.toFixed(2)}.
+          Sale recorded. Server grand total: {formatCurrency(successTotal)}.
         </p>
       )}
 
       {errors.root && (
         <p
           role="alert"
-          className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          className="rounded-md border border-danger/20 bg-danger/10 px-3 py-2 text-sm text-danger"
         >
           {errors.root.message}
         </p>

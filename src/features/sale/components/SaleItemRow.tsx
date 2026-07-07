@@ -1,13 +1,11 @@
-import { X } from 'lucide-react'
+import { ChevronDown, X } from 'lucide-react'
 import type { UseFormRegister } from 'react-hook-form'
 import type { Product } from '@/api/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { SaleFormValues } from '@/features/sale/sale.validation'
-
-/** Native-select styling, matched to the shared `Input` component. */
-const selectClass =
-  'h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30'
+import { formatCurrency } from '@/utils/formatCurrency'
+import { selectClassName } from '@/utils/selectClassName'
 
 interface SaleItemRowProps {
   index: number
@@ -41,30 +39,33 @@ export function SaleItemRow({
 }: SaleItemRowProps) {
   return (
     <div className="grid gap-2 rounded-lg border p-3">
-      <div className="flex items-end gap-3">
-        <div className="grid flex-1 gap-1.5">
+      <div className="grid grid-cols-[1fr_5rem_7rem_auto] items-end gap-3">
+        <div className="grid gap-1.5">
           <label
             htmlFor={`items.${index}.product`}
             className="text-xs text-muted-foreground"
           >
             Product
           </label>
-          <select
-            id={`items.${index}.product`}
-            className={selectClass}
-            aria-invalid={!!productError}
-            {...register(`items.${index}.product`)}
-          >
-            <option value="">Select a product…</option>
-            {products.map((product) => (
-              <option key={product._id} value={product._id}>
-                {product.name} — {product.stockQuantity} in stock
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id={`items.${index}.product`}
+              className={selectClassName}
+              aria-invalid={!!productError}
+              {...register(`items.${index}.product`)}
+            >
+              <option value="">Select a product…</option>
+              {products.map((product) => (
+                <option key={product._id} value={product._id}>
+                  {product.name} — {product.stockQuantity} in stock
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+          </div>
         </div>
 
-        <div className="grid w-24 gap-1.5">
+        <div className="grid gap-1.5">
           <label
             htmlFor={`items.${index}.quantity`}
             className="text-xs text-muted-foreground"
@@ -81,10 +82,10 @@ export function SaleItemRow({
           />
         </div>
 
-        <div className="grid w-28 gap-1.5 text-right">
+        <div className="grid gap-1.5 text-right">
           <span className="text-xs text-muted-foreground">Line total</span>
           <span className="h-8 py-1 text-sm tabular-nums">
-            ৳{lineTotal.toFixed(2)}
+            {formatCurrency(lineTotal)}
           </span>
         </div>
 

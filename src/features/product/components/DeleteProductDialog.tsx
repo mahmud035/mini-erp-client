@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react'
 import type { Product } from '@/api/types'
 import {
   AlertDialog,
@@ -34,6 +35,9 @@ export function DeleteProductDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
+          <div className="flex size-10 items-center justify-center rounded-full bg-danger/10 text-danger">
+            <AlertTriangle className="size-5" />
+          </div>
           <AlertDialogTitle>Delete product?</AlertDialogTitle>
           <AlertDialogDescription>
             {product
@@ -47,6 +51,7 @@ export function DeleteProductDialog({
           </AlertDialogCancel>
           <Button
             variant="destructive"
+            className="bg-danger text-white hover:bg-danger/90 focus-visible:ring-danger/30"
             onClick={onConfirm}
             disabled={remove.isPending}
           >

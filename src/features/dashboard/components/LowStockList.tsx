@@ -1,4 +1,5 @@
 import type { LowStockProduct } from '@/api/types'
+import { Badge } from '@/components/ui/badge'
 import {
   Card,
   CardContent,
@@ -14,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { stockBadgeVariant } from '@/utils/stockBadge'
 
 interface LowStockListProps {
   products: LowStockProduct[]
@@ -50,8 +52,13 @@ export function LowStockList({ products }: LowStockListProps) {
                   <TableCell className="text-muted-foreground">
                     {product.sku}
                   </TableCell>
-                  <TableCell className="text-right tabular-nums">
-                    {product.stockQuantity}
+                  <TableCell className="text-right">
+                    <Badge
+                      variant={stockBadgeVariant(product.stockQuantity)}
+                      className="tabular-nums"
+                    >
+                      {product.stockQuantity}
+                    </Badge>
                   </TableCell>
                 </TableRow>
               ))}

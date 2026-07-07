@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
+import { Upload } from 'lucide-react'
 import type { Product } from '@/api/types'
 import { Button } from '@/components/ui/button'
 import {
@@ -28,6 +29,16 @@ interface ProductFormDialogProps {
   onOpenChange: (open: boolean) => void
   mode: 'create' | 'edit'
   product?: Product
+}
+
+/** Red asterisk marking a required field. */
+function RequiredMark() {
+  return (
+    <span aria-hidden className="text-danger">
+      {' '}
+      *
+    </span>
+  )
 }
 
 const EMPTY_VALUES: ProductFormValues = {
@@ -72,8 +83,11 @@ export function ProductFormDialog({
   const [preview, setPreview] = useState<string | null>(
     product?.image.url ?? null,
   )
+  const [fileName, setFileName] = useState<string | null>(null)
   // Only object URLs we created get revoked — never the edit's http image URL.
   const objectUrlRef = useRef<string | null>(null)
+  // Drives the styled file button; the native input stays hidden but functional.
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const {
     register,
@@ -99,6 +113,7 @@ export function ProductFormDialog({
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
+    setFileName(file.name)
     setValue('image', file, { shouldValidate: true })
     revokePreview()
     const url = URL.createObjectURL(file)
@@ -162,7 +177,10 @@ export function ProductFormDialog({
 
         <form onSubmit={onSubmit} noValidate className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">
+              Name
+              <RequiredMark />
+            </Label>
             <Input
               id="name"
               aria-invalid={!!errors.name}
@@ -175,7 +193,10 @@ export function ProductFormDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="sku">SKU</Label>
+              <Label htmlFor="sku">
+                SKU
+                <RequiredMark />
+              </Label>
               <Input
                 id="sku"
                 aria-invalid={!!errors.sku}
@@ -186,7 +207,10 @@ export function ProductFormDialog({
               )}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category">
+                Category
+                <RequiredMark />
+              </Label>
               <Input
                 id="category"
                 aria-invalid={!!errors.category}
@@ -202,7 +226,10 @@ export function ProductFormDialog({
 
           <div className="grid grid-cols-3 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="purchasePrice">Purchase</Label>
+              <Label htmlFor="purchasePrice">
+                Purchase
+                <RequiredMark />
+              </Label>
               <Input
                 id="purchasePrice"
                 type="number"
@@ -218,7 +245,10 @@ export function ProductFormDialog({
               )}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="sellingPrice">Selling</Label>
+              <Label htmlFor="sellingPrice">
+                Selling
+                <RequiredMark />
+              </Label>
               <Input
                 id="sellingPrice"
                 type="number"
@@ -234,7 +264,10 @@ export function ProductFormDialog({
               )}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="stockQuantity">Stock</Label>
+              <Label htmlFor="stockQuantity">
+                Stock
+                <RequiredMark />
+              </Label>
               <Input
                 id="stockQuantity"
                 type="number"
@@ -252,14 +285,35 @@ export function ProductFormDialog({
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="image">Image</Label>
-            <Input
+            <Label htmlFor="image">
+              Image
+              {mode === 'create' && <RequiredMark />}
+            </Label>
+            {/* Native input stays functional but hidden; a styled button drives it. */}
+            <input
+              ref={fileInputRef}
               id="image"
               type="file"
               accept="image/*"
+              className="hidden"
               aria-invalid={!!errors.image}
               onChange={onFileChange}
             />
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Upload />
+                Choose image
+              </Button>
+              <span className="truncate text-sm text-muted-foreground">
+                {fileName ??
+                  (mode === 'edit' ? 'Current image kept' : 'No file chosen')}
+              </span>
+            </div>
             {errors.image && (
               <p className="text-sm text-destructive">
                 {errors.image.message as string}

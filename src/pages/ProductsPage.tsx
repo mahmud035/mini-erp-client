@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Search } from 'lucide-react'
 import type { Product } from '@/api/types'
 import {
   Card,
@@ -70,12 +70,15 @@ export function ProductsPage() {
         )}
       </div>
 
-      <Input
-        placeholder="Search by name, SKU, or category…"
-        value={searchInput}
-        onChange={(event) => onSearchChange(event.target.value)}
-        className="max-w-sm"
-      />
+      <div className="relative max-w-sm">
+        <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          placeholder="Search by name, SKU, or category…"
+          value={searchInput}
+          onChange={(event) => onSearchChange(event.target.value)}
+          className="pl-9"
+        />
+      </div>
 
       {isPending ? (
         <ProductListSkeleton />
@@ -101,7 +104,7 @@ export function ProductsPage() {
         </Card>
       ) : (
         <div className="space-y-4">
-          <div className="rounded-lg border">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
             <ProductTable
               products={data.items}
               canUpdate={canUpdate}
