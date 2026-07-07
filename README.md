@@ -10,7 +10,7 @@
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 A role-aware, real-time inventory and sales SPA built for a Full-Stack MERN
-developer technical assessment (Classic IT & Sky Mart Ltd., Uttara, Dhaka).
+developer technical assessment
 
 This is the **client**. It talks to a companion Express/MongoDB API — see
 [`mini-erp-server`](https://github.com/mahmud035/mini-erp-server) for the backend
