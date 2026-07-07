@@ -1,7 +1,5 @@
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import axios from 'axios'
-import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
+import { Logo } from '@/components/layout/Logo'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -9,13 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Logo } from '@/components/layout/Logo'
 import { useLogin } from '@/features/auth/auth.hooks'
 import { loginSchema, type LoginInput } from '@/features/auth/auth.validation'
 import { zodResolver } from '@/utils/zodResolver'
+import axios from 'axios'
+import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 /** Turns a login mutation error into a human message (401 = bad credentials). */
 function loginErrorMessage(error: unknown): string {
@@ -56,14 +56,16 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-sm shadow-sm">
+    <Card className="w-full max-w-sm shadow-sm [--card-spacing:--spacing(6)]">
       <CardHeader className="items-center text-center">
         <Logo variant="stacked" />
-        <CardTitle>Sign in</CardTitle>
-        <CardDescription>Access the Mini ERP dashboard.</CardDescription>
+        <div className="mt-6 space-y-1">
+          <CardTitle>Welcome back</CardTitle>
+          <CardDescription>Sign in to access your dashboard.</CardDescription>
+        </div>
       </CardHeader>
       <CardContent>
-        <form onSubmit={onSubmit} noValidate className="grid gap-4">
+        <form onSubmit={onSubmit} noValidate className="grid gap-5">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
@@ -72,7 +74,7 @@ export function LoginForm() {
                 id="email"
                 type="email"
                 autoComplete="email"
-                className="pl-9"
+                className="h-11 pl-9"
                 aria-invalid={!!errors.email}
                 {...register('email')}
               />
@@ -90,7 +92,7 @@ export function LoginForm() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
-                className="px-9"
+                className="h-11 px-9"
                 aria-invalid={!!errors.password}
                 {...register('password')}
               />
@@ -122,7 +124,12 @@ export function LoginForm() {
             </p>
           )}
 
-          <Button type="submit" disabled={login.isPending} className="w-full">
+          <Button
+            type="submit"
+            disabled={login.isPending}
+            size="lg"
+            className="w-full"
+          >
             {login.isPending ? (
               <>
                 <Loader2 className="animate-spin" />
@@ -144,7 +151,7 @@ export function LoginForm() {
                 key={account.email}
                 type="button"
                 variant="outline"
-                size="sm"
+                size="default"
                 onClick={() => fillDemo(account.email)}
               >
                 {account.label}
