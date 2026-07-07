@@ -89,3 +89,57 @@ export interface Paginated<T> {
 
 /** `data` of GET /products. */
 export type ProductListResponse = Paginated<Product>
+
+/**
+ * A sales customer. Mirrors the raw Mongoose doc the API returns — the id is
+ * `_id` (customer responses have no serializer, like products). `name` and
+ * `phone` are required; `email`/`address` are optional contact details.
+ */
+export interface Customer {
+  _id: string
+  name: string
+  phone: string
+  email?: string
+  address?: string
+  createdAt: string
+  updatedAt: string
+}
+
+/** `data` of GET /customers. */
+export type CustomerListResponse = Paginated<Customer>
+
+/**
+ * Body of POST /sales. The server validates with `z.strictObject`, so ONLY
+ * these fields may be sent per line — every display field (name, price, totals)
+ * must be stripped before submit. `quantity` must serialise as a real number.
+ */
+export interface CreateSalePayload {
+  customer: string
+  items: { product: string; quantity: number }[]
+}
+
+/**
+ * One line of a completed sale. `unitPrice` is a server snapshot of the
+ * product's `sellingPrice` at sale time; `lineTotal` = unitPrice * quantity.
+ * The subdocument has no own `_id`.
+ */
+export interface SaleLine {
+  product: string
+  quantity: number
+  unitPrice: number
+  lineTotal: number
+}
+
+/**
+ * A completed, immutable sale returned by POST /sales. `grandTotal` is always
+ * server-computed (Σ lineTotal) — the client's live total is advisory only.
+ */
+export interface Sale {
+  _id: string
+  customer: string
+  items: SaleLine[]
+  grandTotal: number
+  soldBy: string
+  createdAt: string
+  updatedAt: string
+}

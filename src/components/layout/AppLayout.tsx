@@ -14,7 +14,7 @@ function navLinkClass({ isActive }: { isActive: boolean }): string {
 
 /** Role-aware app shell: top navbar + the active page. */
 export function AppLayout() {
-  const { user } = useAuth()
+  const { user, can } = useAuth()
   const logout = useLogout()
 
   return (
@@ -29,6 +29,11 @@ export function AppLayout() {
             <NavLink to="/products" className={navLinkClass}>
               Products
             </NavLink>
+            {can('sale:create') && (
+              <NavLink to="/sales/new" className={navLinkClass}>
+                New Sale
+              </NavLink>
+            )}
           </div>
 
           <div className="flex items-center gap-3">
