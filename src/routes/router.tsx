@@ -3,6 +3,7 @@ import { AppLayout } from '@/components/layout/AppLayout'
 import { ProtectedRoute } from '@/components/layout/ProtectedRoute'
 import { LoginPage } from '@/pages/LoginPage'
 import { DashboardPage } from '@/pages/DashboardPage'
+import { ProductsPage } from '@/pages/ProductsPage'
 
 /**
  * Route map: a public /login, and a protected group (auth guard → app shell)
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="/dashboard" replace /> },
           { path: 'dashboard', element: <DashboardPage /> },
+          { path: 'products', element: <ProductsPage /> },
         ],
       },
     ],

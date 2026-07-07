@@ -51,3 +51,41 @@ export interface DashboardStats {
   totalSales: number
   lowStockProducts: LowStockProduct[]
 }
+
+/** A Cloudinary image reference stored on a product. */
+export interface ProductImage {
+  url: string
+  publicId: string
+}
+
+/**
+ * An inventory item. Mirrors the raw Mongoose doc the API returns — the id is
+ * `_id` (product responses have no serializer, unlike auth's `id`).
+ */
+export interface Product {
+  _id: string
+  name: string
+  sku: string
+  category: string
+  purchasePrice: number
+  sellingPrice: number
+  stockQuantity: number
+  image: ProductImage
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+/** Generic paginated list envelope from the shared backend QueryBuilder. */
+export interface Paginated<T> {
+  items: T[]
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+  }
+}
+
+/** `data` of GET /products. */
+export type ProductListResponse = Paginated<Product>

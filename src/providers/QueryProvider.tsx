@@ -1,6 +1,6 @@
-import { AUTH_UNAUTHORIZED_EVENT } from '@/api/axios';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useEffect, useState, type ReactNode } from 'react';
+import { AUTH_UNAUTHORIZED_EVENT } from '@/api/axios'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useEffect, useState, type ReactNode } from 'react'
 
 /**
  * Wraps the app in a single, stable TanStack Query client.
@@ -18,16 +18,16 @@ export function QueryProvider({ children }: { children: ReactNode }) {
           queries: { retry: false, refetchOnWindowFocus: false },
         },
       }),
-  );
+  )
 
   useEffect(() => {
-    const onUnauthorized = () => queryClient.setQueryData(['auth', 'me'], null);
-    window.addEventListener(AUTH_UNAUTHORIZED_EVENT, onUnauthorized);
+    const onUnauthorized = () => queryClient.setQueryData(['auth', 'me'], null)
+    window.addEventListener(AUTH_UNAUTHORIZED_EVENT, onUnauthorized)
     return () =>
-      window.removeEventListener(AUTH_UNAUTHORIZED_EVENT, onUnauthorized);
-  }, [queryClient]);
+      window.removeEventListener(AUTH_UNAUTHORIZED_EVENT, onUnauthorized)
+  }, [queryClient])
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  )
 }

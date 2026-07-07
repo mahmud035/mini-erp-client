@@ -4,6 +4,14 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/cn'
 import { useAuth, useLogout } from '@/features/auth/auth.hooks'
 
+/** Shared active/inactive styling for top-nav links. */
+function navLinkClass({ isActive }: { isActive: boolean }): string {
+  return cn(
+    'text-sm transition-colors hover:text-foreground',
+    isActive ? 'text-foreground' : 'text-muted-foreground',
+  )
+}
+
 /** Role-aware app shell: top navbar + the active page. */
 export function AppLayout() {
   const { user } = useAuth()
@@ -15,16 +23,11 @@ export function AppLayout() {
         <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
           <div className="flex items-center gap-6">
             <span className="font-semibold tracking-tight">Mini ERP</span>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                cn(
-                  'text-sm transition-colors hover:text-foreground',
-                  isActive ? 'text-foreground' : 'text-muted-foreground',
-                )
-              }
-            >
+            <NavLink to="/dashboard" className={navLinkClass}>
               Dashboard
+            </NavLink>
+            <NavLink to="/products" className={navLinkClass}>
+              Products
             </NavLink>
           </div>
 
