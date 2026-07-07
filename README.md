@@ -18,7 +18,7 @@ case study (dynamic RBAC engine, transactional sales, Socket.IO alerts).
 
 **Live app:** https://mini-erp-client-app.vercel.app
 
-**Live API:** https://mini-erp-server.up.railway.app/api
+**Live API:** https://mini-erp-server.up.railway.app/api/health
 
 Every claim below matches the deployed build — nothing here is aspirational.
 
