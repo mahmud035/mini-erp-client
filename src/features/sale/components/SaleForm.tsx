@@ -1,19 +1,19 @@
-import { useState } from 'react'
-import { useFieldArray, useForm, useWatch } from 'react-hook-form'
-import { ChevronDown, Plus } from 'lucide-react'
-import axios from 'axios'
-import type { Customer, CreateSalePayload, Product } from '@/api/types'
+import type { CreateSalePayload, Customer, Product } from '@/api/types'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import { SaleItemRow } from '@/features/sale/components/SaleItemRow'
 import { useCreateSale } from '@/features/sale/sale.hooks'
 import {
   saleSchema,
   type SaleFormValues,
 } from '@/features/sale/sale.validation'
-import { zodResolver } from '@/utils/zodResolver'
 import { formatCurrency } from '@/utils/formatCurrency'
 import { selectClassName } from '@/utils/selectClassName'
-import { SaleItemRow } from '@/features/sale/components/SaleItemRow'
+import { zodResolver } from '@/utils/zodResolver'
+import axios from 'axios'
+import { ChevronDown, Plus } from 'lucide-react'
+import { useState } from 'react'
+import { useFieldArray, useForm, useWatch } from 'react-hook-form'
 
 const EMPTY_SALE: SaleFormValues = {
   customer: '',
@@ -199,10 +199,7 @@ export function SaleForm({ customers, products }: SaleFormProps) {
       )}
 
       <div className="flex justify-end">
-        <Button
-          type="submit"
-          disabled={createSale.isPending || hasStockError}
-        >
+        <Button type="submit" disabled={createSale.isPending || hasStockError}>
           {createSale.isPending ? 'Recording…' : 'Record sale'}
         </Button>
       </div>
